@@ -20,6 +20,7 @@ Route::get('/', function () {
     ]);
 });
 
+
 Route::get('/about', function () {
     return view('about', [
         "title" => "About",
@@ -35,11 +36,16 @@ Route::get('/gallery', function () {
     ]);
 });
 
+Route::get('/home', function(){
+    return view('admin.home', [
+        "title" => "Home"
+    ]);
+});
+
 Route::resource('/contacts', ContactController::class);
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
